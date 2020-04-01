@@ -52,8 +52,8 @@ public class Vector {
 		return _p;
 	}
 	/**
-	 * the function preforms an addition operation between two vector 
-	 * @param __v vector
+	 * the function preforms an addition operation between two vectors
+	 * @param _v vector
 	 * @return new vector  - the result of the operation
 	 */
 	public Vector add(Vector _v)  {
@@ -65,7 +65,7 @@ public class Vector {
 	 * @return new vector  - the result of the operation
 	 */
 	public Vector subtract(Vector _v) {
-		return new Vector(_p.subtract(_v.get_p()));
+		return _p.subtract(_v.get_p());
 	}
 	/**
 	 * the function preforms a multiplication operation between the vector and scalar
