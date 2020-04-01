@@ -15,9 +15,9 @@ public class Plane implements Geometry {
 	 * @param _p point
 	 * @param _v vector(normal)
 	 */
-	public Plane(Point3D _p, Vector _normal) {
-		this._p = new Point3D(_p);
-		this._normal = new Vector(_normal);
+	public Plane(Point3D p, Vector normal) {
+		this._p = new Point3D(p);
+		this._normal = new Vector(normal);
 	}
 	/**
 	 *  Plane constructor receiving 3 points
@@ -25,10 +25,10 @@ public class Plane implements Geometry {
 	 * @param _p2 point2 value
 	 * @param _p3 point3 value
 	 */
-	public Plane(Point3D _p1,Point3D _p2,Point3D _p3) { 
-		this._p = new Point3D(_p1);
-		Vector V = new Vector(_p2.subtract(_p1));
-		Vector U = new Vector(_p3.subtract(_p1));
+	public Plane(Point3D p1,Point3D p2,Point3D p3) { 
+		this._p = new Point3D(p1);
+		Vector V = new Vector(p2.subtract(p1));
+		Vector U = new Vector(p3.subtract(p1));
 		Vector N = U.crossProduct(V);
 		N.normalize();
 		N = N.scale(-1);
@@ -53,7 +53,7 @@ public class Plane implements Geometry {
 	 * @return the normal  
 	 */
 	@Override
-	public Vector getNormal(Point3D _p) {
+	public Vector getNormal(Point3D p) {
 		return _normal;
 	}
 	

@@ -11,18 +11,18 @@ public class Ray {
      * @param _p point value
      * @param _v vector value
      */
-	public Ray(Point3D _p, Vector _v) {
-		this._p = _p;
-		this._v = _v;
+	public Ray(Point3D p, Vector v) {
+		this._p = p;
+		this._v = v;
 		this._v.normalize();      
 	}
 	/**
      * Copy constructor for Ray
      * @param _r
      */
-	public Ray(Ray _r) {
-		_p = _r.get_p();
-		_v = _r.get_v();
+	public Ray(Ray r) {
+		_p = r.get_p();
+		_v = r.get_v();
 		_v.normalize();        
 	}
 	/**

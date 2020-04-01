@@ -1,4 +1,6 @@
 package primitives;
+
+
 /**
 * Class Vector is the basic class representing a vector
 */
@@ -10,10 +12,10 @@ public class Vector {
      * @param _coor2 coordinate 2 value
      * @param _coor3 coordinate 3 value
      */
-	public Vector(Coordinate _coor1,Coordinate _coor2,Coordinate _coor3)  {
-		if(_coor1.get()==0 && _coor2.get()==0 && _coor3.get()==0)
+	public Vector(Coordinate coor1,Coordinate coor2,Coordinate coor3)  {
+		if(coor1.get()==0 && coor2.get()==0 && coor3.get()==0)
 			throw new IllegalArgumentException("Vector zero");
-		_p = new Point3D(_coor1,_coor2,_coor3);
+		_p = new Point3D(coor1,coor2,coor3);
 	}
 	/**
      * Vector constructor receiving  3 double
@@ -21,28 +23,28 @@ public class Vector {
      * @param _d2 coordinate 2 value
      * @param _d3 coordinate 3 value
      */
-	public Vector(double _d1,double _d2,double _d3) {
-		if(_d1==0 && _d2==0 && _d3==0)                   
+	public Vector(double d1,double d2,double d3) {
+		if(d1==0 && d2==0 && d3==0)                   
 			throw new IllegalArgumentException("Vector zero");
-		_p = new Point3D(_d1,_d2,_d3);
+		_p = new Point3D(d1,d2,d3);
 	}
 	/**
      * Vector constructor receiving Point3D
      * 
      * @param _p  Point value
      */
-	public Vector(Point3D _p) {
-		if(_p.equals(Point3D.ZERO))
+	public Vector(Point3D p) {
+		if(p.equals(Point3D.ZERO))
 			throw new IllegalArgumentException("Vector zero");
-		_p = new Point3D(_p);
+		this._p = new Point3D(p);
 	}
 	/**
      * Copy constructor for Vector
      * 
      * @param _v
      */
-	public Vector(Vector _v) {
-		_p = new Point3D(_v.get_p());
+	public Vector(Vector v) {
+		_p = new Point3D(v.get_p());
 	}
 	/**
 	 * Vector value getter
@@ -56,49 +58,49 @@ public class Vector {
 	 * @param _v vector
 	 * @return new vector  - the result of the operation
 	 */
-	public Vector add(Vector _v)  {
-		return new Vector(_p.add(_v));
+	public Vector add(Vector v)  {
+		return new Vector(_p.add(v));
 	}
 	/**
 	 * the function preforms a substraction operation between the vectors 
 	 * @param __v another vector
 	 * @return new vector  - the result of the operation
 	 */
-	public Vector subtract(Vector _v) {
-		return _p.subtract(_v.get_p());
+	public Vector subtract(Vector v) {
+		return _p.subtract(v.get_p());
 	}
 	/**
 	 * the function preforms a multiplication operation between the vector and scalar
 	 * @param __d the scalar
 	 * @return new vector  - the result of the operation
 	 */
-	public Vector scale(double _d) {
-		double _d1 =_p.get_coor1().get()*_d;
-		double _d2 =_p.get_coor2().get()*_d;
-		double _d3 =_p.get_coor3().get()*_d;
-		return new Vector(_d1,_d2,_d3);
+	public Vector scale(double d) {
+		double d1 =_p.get_coor1().get()*d;
+		double d2 =_p.get_coor2().get()*d;
+		double d3 =_p.get_coor3().get()*d;
+		return new Vector(d1,d2,d3);
 	}
 	/**
 	 * the function preforms a dotProduct operation between the vectors
 	 * @param __v another vector
 	 * @return  the result of the operation
 	 */
-	public double dotProduct (Vector _v){
-		double _d1 =_p.get_coor1().get() * _v.get_p().get_coor1().get();
-		double _d2 =_p.get_coor2().get() * _v.get_p().get_coor2().get();
-		double _d3 =_p.get_coor3().get() * _v.get_p().get_coor3().get();
-		return _d1 + _d2 +_d3;
+	public double dotProduct (Vector v){
+		double d1 =_p.get_coor1().get() * v.get_p().get_coor1().get();
+		double d2 =_p.get_coor2().get() * v.get_p().get_coor2().get();
+		double d3 =_p.get_coor3().get() * v.get_p().get_coor3().get();
+		return d1 + d2 +d3;
 	}
 	/**
 	 * the function preforms a crossProduct operation between the vectors
 	 * @param __v another vector
 	 * @return new vector - the result of the operation
 	 */
-	public Vector crossProduct(Vector _v) {
-		double _d1 =_p.get_coor2().get()*_v.get_p().get_coor3().get() - _p.get_coor3().get()*_v.get_p().get_coor2().get();
-		double _d2 =_p.get_coor3().get()*_v.get_p().get_coor1().get() - _p.get_coor1().get()*_v.get_p().get_coor3().get();
-		double _d3 =_p.get_coor1().get()*_v.get_p().get_coor2().get() - _p.get_coor2().get()*_v.get_p().get_coor1().get();
-		return new Vector(_d1,_d2,_d3);
+	public Vector crossProduct(Vector v) {
+		double d1 =_p.get_coor2().get()*v.get_p().get_coor3().get() - _p.get_coor3().get()*v.get_p().get_coor2().get();
+		double d2 =_p.get_coor3().get()*v.get_p().get_coor1().get() - _p.get_coor1().get()*v.get_p().get_coor3().get();
+		double d3 =_p.get_coor1().get()*v.get_p().get_coor2().get() - _p.get_coor2().get()*v.get_p().get_coor1().get();
+		return new Vector(d1,d2,d3);
 	}
 	/**
 	 * the function calculate the lengthSquared of the vector

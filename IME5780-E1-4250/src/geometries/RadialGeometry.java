@@ -13,16 +13,16 @@ public abstract class RadialGeometry implements Geometry {
 	 *  RadialGeometry constructor receiving radius
 	 * @param _radius
 	 */
-	public RadialGeometry(double _radius) {
-		this._radius = _radius;
+	public RadialGeometry(double radius) {
+		this._radius = radius;
 	}
 	/**
      * Copy constructor for RadialGeometry
      * 
      * @param _v
      */
-	public RadialGeometry(RadialGeometry _radialGeo) {
-		_radius = _radialGeo.get_radius();
+	public RadialGeometry(RadialGeometry radialGeo) {
+		_radius = radialGeo.get_radius();
 	}
 	/**
 	 * RadialGeometry value getter
@@ -36,6 +36,6 @@ public abstract class RadialGeometry implements Geometry {
 	 * @return the normal  
 	 */
 	@Override
-	public abstract Vector getNormal(Point3D _p);
+	public abstract Vector getNormal(Point3D p);
 
 }

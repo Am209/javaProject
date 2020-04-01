@@ -13,8 +13,8 @@ public class Triangle extends Polygon {
 	 * @param _p2 point2 value
 	 * @param _p3 point3 value
 	 */
-	public Triangle(Point3D _p1,Point3D _p2,Point3D _p3) {
-		 super(_p1,_p2,_p3);
+	public Triangle(Point3D p1,Point3D p2,Point3D p3) {
+		 super(p1,p2,p3);
 	}
 
 }

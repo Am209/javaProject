@@ -4,7 +4,6 @@
 package geometries;
 import primitives.*;
 import static java.lang.System.out;
-import static org.junit.Assert.assertTrue;
 import static primitives.Util.*;
 
 /**
@@ -73,7 +72,7 @@ public final class Main {
              out.println("ERROR: Point - Point does not work correctly");
        
         out.println("If there were no any other outputs - all tests succeeded!");
-   
+      
     }
 }
  
