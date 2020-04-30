@@ -5,7 +5,6 @@ import primitives.Vector;
 /**
 * Interface Geometry provides the function getNormal for all the classes that implement it.
 */
-public interface Geometry {
+public interface Geometry extends Intersectable{
 	public Vector getNormal(Point3D p);
-	
 }

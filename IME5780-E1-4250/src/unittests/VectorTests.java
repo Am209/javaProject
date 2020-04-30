@@ -11,7 +11,7 @@ import org.junit.Test;
 import primitives.Vector;
 
 /**
- * @author User
+ * Testing Vector
  *
  */
 public class VectorTests {
@@ -28,7 +28,7 @@ public class VectorTests {
 	     assertEquals(new Vector(2, 4, 6),v);
 	     
 	     // =============== Boundary Values Tests ==================
-	        // test zero vector from add vectors
+	      // test zero vector from add vectors
 	     v2 = new Vector(-1,-2, -3);
 	     try {
 	    	 v = v1.add(v2);

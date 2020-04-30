@@ -1,7 +1,11 @@
 package geometries;
 
+import java.util.LinkedList;
+import java.util.List;
 import primitives.Point3D;
+import primitives.Ray;
 import primitives.Vector;
+import static primitives.Util.*;
 /**
 * Class Plane is the basic class representing a plane
 * the class implement the inteface Geometry
@@ -56,6 +60,22 @@ public class Plane implements Geometry {
 	public Vector getNormal(Point3D p) {
 		return _normal;
 	}
-	
+	/**
+	 * The function return a list of the intersections points  of the ray with the Plane
+	 * @param ray
+	 * @return List<Point3D>
+	 */
+	public List<Point3D> findIntersections(Ray ray){
+		List<Point3D> l = null;
+		double nv =_normal.dotProduct(ray.get_v());
+		if(isZero(nv)) 
+			return null;
+		double t = (_normal.dotProduct(_p.subtract(ray.get_p())))/nv;
+		if(t>0) {
+			l = new LinkedList<Point3D>();
+			l.add(ray.getPoint(t));
+		}
+		return l;
+	}
 
 }

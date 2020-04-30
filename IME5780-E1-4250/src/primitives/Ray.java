@@ -39,6 +39,9 @@ public class Ray {
 	public Vector get_v() {
 		return _v;
 	}
+	public Point3D getPoint(double t) {
+		return new Point3D( _p.add(_v.scale(t)));
+	}
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

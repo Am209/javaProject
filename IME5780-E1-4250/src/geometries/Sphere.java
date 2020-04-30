@@ -1,6 +1,11 @@
 package geometries;
 
+
+import java.util.LinkedList;
+import java.util.List;
+
 import primitives.Point3D;
+import primitives.Ray;
 import primitives.Vector;
 /**
 * Class Sphere is the basic class representing a sphere
@@ -34,7 +39,33 @@ public class Sphere extends RadialGeometry {
 		Vector v = new Vector(p.subtract(_center));
 		return v.normalize();
 	}
-
+	/**
+	 * The function return a list of the intersections points  of the ray with the Sphere
+	 * @param ray
+	 * @return List<Point3D>
+	 */
+	public List<Point3D> findIntersections(Ray ray){
+		List<Point3D> l = new LinkedList<Point3D>();
+		
+		Vector u = _center.subtract(ray.get_p());
+		 
+		double uLength = u.length();
+		double tm = u.dotProduct(ray.get_v());
+		double d = Math.sqrt(u.lengthSquared() - tm*tm);
+		
+		if(d>=_radius||d<0) //no intersection points
+			return null;
+		double th = Math.sqrt(_radius*_radius-d*d);
+		double t1 = tm+th;
+		double t2 = tm-th;
+		if(t1>0){
+			l.add(ray.getPoint(t1));
+		}
+		if(t2>0 && uLength>_radius){
+			l.add(ray.getPoint(t2));
+		}
+		return l.isEmpty()?null:l; 
+	}
 	@Override
 	public String toString() {
 		return "Sphere center=" + _center + ", radius=" + _radius ;
