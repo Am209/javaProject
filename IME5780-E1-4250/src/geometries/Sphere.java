@@ -3,7 +3,7 @@ package geometries;
 
 import java.util.LinkedList;
 import java.util.List;
-
+import static primitives.Util.*;
 import primitives.Point3D;
 import primitives.Ray;
 import primitives.Vector;
@@ -46,25 +46,28 @@ public class Sphere extends RadialGeometry {
 	 */
 	public List<Point3D> findIntersections(Ray ray){
 		List<Point3D> l = new LinkedList<Point3D>();
-		
-		Vector u = _center.subtract(ray.get_p());
-		 
-		double uLength = u.length();
-		double tm = u.dotProduct(ray.get_v());
-		double d = Math.sqrt(u.lengthSquared() - tm*tm);
-		
-		if(d>=_radius||d<0) //no intersection points
-			return null;
-		double th = Math.sqrt(_radius*_radius-d*d);
-		double t1 = tm+th;
-		double t2 = tm-th;
-		if(t1>0){
-			l.add(ray.getPoint(t1));
-		}
-		if(t2>0 && uLength>_radius){
-			l.add(ray.getPoint(t2));
+		try {
+			Vector u = _center.subtract(ray.get_p());
+			double uLength = u.length();
+			double tm = alignZero(u.dotProduct(ray.get_v()));
+			double d = Math.sqrt(u.lengthSquared() - tm*tm);
+			if(d>=_radius||d<0) //no intersection points
+				return null;
+			double th = alignZero(Math.sqrt(_radius*_radius-d*d));
+			double t1 = alignZero(tm+th);
+			double t2 = alignZero(tm-th);
+			if(t1>0){
+				
+				l.add(ray.getPoint(t1));
+			}
+			if(t2>0 && uLength>_radius){
+				l.add(ray.getPoint(t2));
+			}
+		}catch(IllegalArgumentException e) {
+			 l.add(ray.getPoint(_radius));
 		}
 		return l.isEmpty()?null:l; 
+		
 	}
 	@Override
 	public String toString() {
