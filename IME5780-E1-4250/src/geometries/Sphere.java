@@ -4,6 +4,9 @@ package geometries;
 import java.util.LinkedList;
 import java.util.List;
 import static primitives.Util.*;
+
+import primitives.Color;
+import primitives.Material;
 import primitives.Point3D;
 import primitives.Ray;
 import primitives.Vector;
@@ -14,6 +17,28 @@ import primitives.Vector;
 public class Sphere extends RadialGeometry {
 
 	protected Point3D _center;
+	
+	/**
+	 *  Sphere constructor receiving color, material, radius and center point
+	 * @param emmission
+	 * @param material
+	 * @param _radius
+	 * @param _center
+	 */
+	public Sphere(Color emmission, Material material, double _radius, Point3D _center) {
+		super(emmission, material, _radius);
+		this._center = _center;
+	}
+	/**
+	 * Sphere constructor receiving color, radius and center point
+	 * @param emmission
+	 * @param radius
+	 * @param center
+	 */
+	public Sphere(Color emmission, double radius, Point3D center) {
+		super(emmission, radius);
+		_center = center;
+	}
 	/**
 	 *  Sphere constructor receiving radius and center point
 	 * @param _radius
@@ -21,7 +46,7 @@ public class Sphere extends RadialGeometry {
 	 */
 	public Sphere(double radius,Point3D center) {
 		super(radius);
-		this._center =center;
+		_center =center;
 	}
 	/**
 	 * Sphere value getter
@@ -44,8 +69,8 @@ public class Sphere extends RadialGeometry {
 	 * @param ray
 	 * @return List<Point3D>
 	 */
-	public List<Point3D> findIntersections(Ray ray){
-		List<Point3D> l = new LinkedList<Point3D>();
+	public List<GeoPoint> findIntersections(Ray ray){
+		List<GeoPoint> l = new LinkedList<GeoPoint>();
 		try {
 			Vector u = _center.subtract(ray.get_p());
 			double uLength = u.length();
@@ -58,13 +83,13 @@ public class Sphere extends RadialGeometry {
 			double t2 = alignZero(tm-th);
 			if(t1>0){
 				
-				l.add(ray.getPoint(t1));
+				l.add(new GeoPoint(this,ray.getPoint(t1)));
 			}
 			if(t2>0 && uLength>_radius){
-				l.add(ray.getPoint(t2));
+				l.add(new GeoPoint(this,ray.getPoint(t2)));
 			}
 		}catch(IllegalArgumentException e) {
-			 l.add(ray.getPoint(_radius));
+			 l.add(new GeoPoint(this,ray.getPoint(_radius)));
 		}
 		return l.isEmpty()?null:l; 
 		

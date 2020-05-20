@@ -6,8 +6,6 @@ package elements;
 import primitives.Point3D;
 import primitives.Ray;
 import primitives.Vector;
-
-import static java.lang.System.out;
 import static primitives.Util.*;
 
 /**

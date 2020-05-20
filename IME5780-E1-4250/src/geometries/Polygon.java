@@ -10,7 +10,7 @@ import static primitives.Util.*;
  * 
  * @author Dan
  */
-public class Polygon implements Geometry {
+public class Polygon extends Geometry {
     /**
      * List of polygon's vertices
      */
@@ -21,6 +21,27 @@ public class Polygon implements Geometry {
     protected Plane _plane;
 
     /**
+	 * @param emmission
+	 * @param material
+	 * @param _vertices
+	 * @param _plane
+	 */
+	public Polygon(Color emmission, Material material, Point3D... vertices) {
+		this(emmission,vertices);
+		_material = material;
+	}
+
+	/**
+     * Polygon constructor based on emmission and vertices list. 
+	 * @param emmission
+	 * @param _vertices
+	 */
+	public Polygon(Color emmission,Point3D... vertices) {
+		this(vertices);
+		_emmission = emmission;
+	}
+
+	/**
      * Polygon constructor based on vertices list. The list must be ordered by edge
      * path. The polygon must be convex.
      * 
@@ -84,7 +105,7 @@ public class Polygon implements Geometry {
     public Vector getNormal(Point3D point) {
         return _plane.getNormal();
     }
-    public List<Point3D> findIntersections(Ray ray){
+    public List<GeoPoint> findIntersections(Ray ray){
 		return null;
 	}
 }

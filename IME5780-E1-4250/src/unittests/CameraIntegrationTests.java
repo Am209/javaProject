@@ -11,6 +11,7 @@ import java.util.List;
 import org.junit.Test;
 
 import elements.Camera;
+import geometries.Intersectable.GeoPoint;
 import geometries.Plane;
 import geometries.Sphere;
 import geometries.Triangle;
@@ -25,7 +26,7 @@ public class CameraIntegrationTests {
 	 final int WIDTH = 3;
 	 final int HEIGHT = 3;
 	 int counter;
-	 List<Point3D> list = new LinkedList<Point3D>();
+	 List<GeoPoint> list = new LinkedList<GeoPoint>();
 	 
 	 
 	 /**

@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.junit.Test;
 
+import geometries.Intersectable.GeoPoint;
 import geometries.Sphere;
 import primitives.Point3D;
 import primitives.Ray;
@@ -51,9 +52,9 @@ public class SphereTests {
          assertNull("Ray's line out of sphere",sphere.findIntersections(new Ray(new Point3D(-1, 0, 0), new Vector(1, 1, 0))));
         
          // TC02: Ray starts before and crosses the sphere (2 points)
-         List<Point3D> result = sphere.findIntersections(new Ray(new Point3D(-1, 0, 0), new Vector(3, 1, 0)));
+         List<GeoPoint> result = sphere.findIntersections(new Ray(new Point3D(-1, 0, 0), new Vector(3, 1, 0)));
          assertEquals( "Wrong number of points",2, result.size());
-         if (result.get(0).get_coor1().get() > result.get(1).get_coor1().get()) {
+         if (result.get(0).getPoint().get_coor1().get() > result.get(1).getPoint().get_coor1().get()) {
              result = List.of(result.get(1), result.get(0));
          }
          assertEquals("Ray crosses sphere",exp, result);

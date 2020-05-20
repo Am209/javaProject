@@ -11,6 +11,7 @@ import java.util.List;
 import org.junit.Test;
 
 import geometries.Geometries;
+import geometries.Intersectable.GeoPoint;
 import geometries.Plane;
 import geometries.Sphere;
 import geometries.Triangle;
@@ -37,7 +38,7 @@ public class GeometriesTests {
 		
 		// TC01:Ray intersects some Geometries
 		g = new Geometries(p,s,t);
-		List<Point3D> result  = g.findIntersections(new Ray(new Point3D(1, 0, 0.5), new Vector(0, -1, 0)));
+		List<GeoPoint> result  = g.findIntersections(new Ray(new Point3D(1, 0, 0.5), new Vector(0, -1, 0)));
 		assertEquals(" Wrong number of points",1,result.size());
 		
 		// =============== Boundary Values Tests ==================
