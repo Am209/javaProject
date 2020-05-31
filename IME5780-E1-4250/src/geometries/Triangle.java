@@ -2,7 +2,7 @@ package geometries;
 
 import java.util.LinkedList;
 import java.util.List;
-
+import static primitives.Util.*;
 import primitives.Color;
 import primitives.Material;
 import primitives.Point3D;
@@ -52,6 +52,9 @@ public class Triangle extends Polygon {
 	 * @return List<Point3D>
 	 */
 	public List<GeoPoint> findIntersections(Ray ray){
+		List<GeoPoint> l = _plane.findIntersections(ray);
+		if(l == null)
+			return null;
 		Vector v1 = _vertices.get(0).subtract(ray.get_p());
 		Vector v2 = _vertices.get(1).subtract(ray.get_p());
 		Vector v3 = _vertices.get(2).subtract(ray.get_p());
@@ -60,12 +63,13 @@ public class Triangle extends Polygon {
 		Vector n2 = v2.crossProduct(v3).normalize();
 		Vector n3 = v3.crossProduct(v1).normalize();
 		
-		double t1 = ray.get_v().dotProduct(n1);
-		double t2 = ray.get_v().dotProduct(n2);
-		double t3 = ray.get_v().dotProduct(n3);
+		double t1 = alignZero(ray.get_v().dotProduct(n1));
+		double t2 = alignZero(ray.get_v().dotProduct(n2));
+		double t3 = alignZero(ray.get_v().dotProduct(n3));
 		if(t1>0&&t2>0&&t3>0 || t1<0&&t2<0&&t3<0) {
-			List<GeoPoint> l = new LinkedList<GeoPoint>();
-		    l.add(new GeoPoint(this,_plane.findIntersections(ray).get(0).getPoint()));
+			//System.out.println(_plane.findIntersections(ray).get(0).getPoint()+" "+ray);
+			for(GeoPoint gp : l)
+				gp._geometry = this;
 		    return l;
 		}
 		return null;

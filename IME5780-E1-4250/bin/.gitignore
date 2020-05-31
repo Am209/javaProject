@@ -1,3 +1,5 @@
 /renderer/
-/unittests/
+/geometries/
 /elements/
+/unittests/
+/primitives/

@@ -4,8 +4,22 @@ package primitives;
 */
 public class Ray {
 
+	private static final double DELTA = 0.1;
 	private Point3D _p;
 	private Vector _v;
+	
+	/**
+     * Ray constructor receiving point,vector normal
+     * @param head point value
+     * @param direction vector 
+     * @param nornal vector 
+     */
+	public Ray(Point3D head, Vector v, Vector n) {
+		Vector delta = n.scale(n.dotProduct(v) > 0 ? DELTA : - DELTA);
+		_p = head.add(delta);
+		_v = v.normalize();
+	}
+
 	/**
      * Ray constructor receiving point3D and vector
      * @param _p point value

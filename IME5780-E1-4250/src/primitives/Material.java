@@ -11,6 +11,8 @@ public class Material {
 	private double _kD;
 	private double _kS;
 	private int _nShininess;
+	private double _kT;
+	private double _kR;
 	/**
 	 *  Material constructor recieving  kD, kS and nShininess
 	 * @param _kD
@@ -18,9 +20,22 @@ public class Material {
 	 * @param _nShininess
 	 */
 	public Material(double kD, double kS, int nShininess) {
+		this(kD,kS,nShininess,0,0);
+	}
+	/**
+	 *  Material constructor recieving  kD, kS,nShininess,kT and kr
+	 * @param _kD
+	 * @param _kS
+	 * @param _nShininess
+	 * @param _kT
+	 * @param _kR
+	 */
+	public Material(double kD, double kS, int nShininess,double kT, double kR) {
 		_kD = kD;
 		_kS = kS;
 		_nShininess = nShininess;
+		_kT = kT;
+		_kR = kR;
 	}
 	/**
 	 *  Material value getter
@@ -42,6 +57,21 @@ public class Material {
 	 */
 	public int get_nShininess() {
 		return _nShininess;
+	}
+	/**
+	 *  Material value getter
+	 * @return the _kT
+	 */
+	public double get_kT() {
+		return _kT;
+	}
+	
+	/**
+	 *  Material value getter
+	 * @return the _kR
+	 */
+	public double get_kR() {
+		return _kR;
 	}
 	
 	

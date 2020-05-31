@@ -98,7 +98,7 @@ public class Plane extends Geometry {
 		double nv =_normal.dotProduct(ray.get_v());
 		if(isZero(nv)) 
 			return null;
-		double t = (_normal.dotProduct(_p.subtract(ray.get_p())))/nv;
+		double t = alignZero((_normal.dotProduct(_p.subtract(ray.get_p())))/nv);
 		if(t>0) {
 			l = new LinkedList<GeoPoint>();
 			l.add(new GeoPoint(this,ray.getPoint(t)));
