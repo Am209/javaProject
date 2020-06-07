@@ -224,7 +224,7 @@ public class Render {
 		return true;
 	}
 	/**
-	 * The function return the  transparency of the point
+	 * The function return the transparency of the point
 	 * @param light
 	 * @param Vector l
 	 * @param Vector n

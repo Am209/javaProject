@@ -1,5 +1,2 @@
-/renderer/
-/geometries/
-/elements/
 /unittests/
-/primitives/
+/renderer/
