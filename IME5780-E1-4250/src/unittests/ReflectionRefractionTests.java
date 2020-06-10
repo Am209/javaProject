@@ -137,7 +137,7 @@ public class ReflectionRefractionTests {
 						   new Vector(0, 0, -50))
 				);
 		
-		ImageWriter imageWriter = new ImageWriter("final picture", 200, 200, 600, 600);
+		ImageWriter imageWriter = new ImageWriter("planeSphere", 200, 200, 600, 600);
 		Render render = new Render(imageWriter, scene);
 
 		render.renderImage();

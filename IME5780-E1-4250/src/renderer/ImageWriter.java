@@ -17,7 +17,7 @@ import javax.imageio.stream.*;
  */
 public class ImageWriter {
 	private double _imageWidth, _imageHeight;
-	private int _nX, _nY;
+	private int _nX, _nY,_sX,_sY;
 
 	private final String PROJECT_PATH = System.getProperty("user.dir");
 
@@ -35,15 +35,18 @@ public class ImageWriter {
 	 * @param nY amount of pixels by height
 	 */
 	public ImageWriter(String imageName, double width, double height, int nX, int nY) {
+		this(imageName, width, height, nX, nY, 1, 1);
+	}
+	public ImageWriter(String imageName, double width, double height, int nX, int nY,int sX,int sY) {
 		_imageName = imageName;
 		_imageWidth = width;
 		_imageHeight = height;
 		_nX = nX;
 		_nY = nY;
-
+		_sX = sX;
+		_sY = sY;
 		_image = new BufferedImage(_nX, _nY, BufferedImage.TYPE_INT_RGB);
 	}
-
 	// ***************** Getters/Setters ********************** //
 	/**
 	 * View Plane width getter
@@ -66,9 +69,20 @@ public class ImageWriter {
      * @return the amount of horizontal pixels
      */
 	public int getNx() { return _nX; }
-
+	/**
+	 * @return the _sX
+	 */
+	public int get_sX() {
+		return _sX;
+	}
+	/**
+	 * @return the _sY
+	 */
+	public int get_sY() {
+		return _sY;
+	}
+	 
 	// ***************** Operations ******************** //
-
 	/**
 	 * Function writeToImage produces unoptimized jpeg file of
 	 * the image according to pixel color matrix in the directory

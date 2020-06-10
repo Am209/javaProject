@@ -54,29 +54,47 @@ public class Render {
 	 * The function create and and render an image using the scene and the imageWriter
 	 */
 	public void renderImage() {
-		Camera camera = _scene.getCamera();
-		Intersectable geometries = _scene.getGeometries(); 		
-		java.awt.Color background = _scene.getBackground().getColor();
 		int nX =  _imageWriter.getNx();
 		int nY = _imageWriter.getNy();
-		double distance = _scene.getDistance();
-		double width = _imageWriter.getWidth();
-		double height = _imageWriter.getHeight();
 		for(int i = 0; i < nX; i++) {
 			for(int j = 0; j < nY; j++) {
-				Ray ray =  camera.constructRayThroughPixel(nX, nY, j, i, distance, width, height);
-				List<GeoPoint> intersectionPoints = geometries.findIntersections(ray); 
-				if (intersectionPoints==null) {
-					_imageWriter.writePixel(j, i, background); 
-					}
-				else {
-					 
-					GeoPoint closestPoint =  findCLosestIntersection(ray);
-					_imageWriter.writePixel(j, i, closestPoint == null? background : calcColor(closestPoint,ray).getColor());
-				}
+				Color color = SupersamplingColor(nX,nY,j,i);
+				_imageWriter.writePixel(j, i,color.getColor());
 			}
 		}
 	}
+	
+	
+	private Color SupersamplingColor(int nX,int nY, int pixelColumn, int pixelRow) {
+		Camera camera = _scene.getCamera();
+		Intersectable geometries = _scene.getGeometries(); 		
+		Color background = _scene.getBackground();
+		int sX =  _imageWriter.get_sX();
+		int sY = _imageWriter.get_sY();
+		double distance = _scene.getDistance();
+		double width = _imageWriter.getWidth();
+		double height = _imageWriter.getHeight();
+		Color color = Color.BLACK;
+		Ray ray;
+		for(int i = 0; i < sX; i++) {
+			for(int j = 0; j < sY; j++) {
+				if(sX==1 && sY==1)                   //we dont want to turn on the superSampling improvment. 
+					ray =  camera.constructRayThroughPixel(nX, nY, pixelColumn, pixelRow, distance, width, height);	
+				else
+					ray =  camera.constructRayThroughPixel(sX*nX, sY*nY, pixelColumn*sY+j, pixelRow*sX+i, distance, width, height);		
+				List<GeoPoint> intersectionPoints = geometries.findIntersections(ray); 
+				if (intersectionPoints==null) 
+					color = color.add(background);                              
+				else {
+					GeoPoint closestPoint =  findCLosestIntersection(ray);
+					color = color.add(calcColor(closestPoint,ray));
+				}
+			}
+		}
+		
+		return color.reduce(sX*sY);
+	}
+	
 	/**
 	 * The function recieve point and  calculate its color 
 	 * @param geoPoint
