@@ -59,7 +59,14 @@ public class Camera {
 	}
 	/**
 	 * The function construct ray that go through specific pixel
-	 * @return Ray
+	 * @param nX amount of pixels by Width 
+	 * @param nY amount of pixels by height
+	 * @param j the pixel Column 
+	 * @param i the pixel Row
+	 * @param screenDistance the distance between the camera and the view plane
+	 * @param screenWidth View Plane width in size units
+	 * @param screenHeight View Plane height in size units
+	 * @return Ray construct ray that go through the pixel
 	 */
 	public Ray constructRayThroughPixel (int nX, int nY, int j, int i, double screenDistance, 
 			double screenWidth, double screenHeight) {

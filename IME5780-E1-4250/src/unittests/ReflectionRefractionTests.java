@@ -106,6 +106,11 @@ public class ReflectionRefractionTests {
 		render.renderImage();
 		render.getImageWriter().writeToImage();
 	}
+	
+	/**
+	 * Produce a picture of some spheres on a Plane lighted by a spot lights with 
+	 *  producing partial shadow
+	 */
 	@Test
 	public void planeSpheres() {
 		Scene scene = new Scene("Test scene");
@@ -128,7 +133,7 @@ public class ReflectionRefractionTests {
 				
 
 		scene.addLights( 
-				//new DirectionalLight(new Color(169, 169, 169), new Vector(-1, -1, 2))
+				
 				new SpotLight(new Color(220, 220, 220),  new Point3D(600, -40, 500), 1, 0.00001, 0.000005, 
 						 new Vector(-1, 0, 0)),
 				new SpotLight(new Color(95,158,160),  new Point3D(-100, 0, -600), 1, 0.00001, 0.000005, 

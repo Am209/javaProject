@@ -37,6 +37,16 @@ public class ImageWriter {
 	public ImageWriter(String imageName, double width, double height, int nX, int nY) {
 		this(imageName, width, height, nX, nY, 1, 1);
 	}
+	/**
+	 * Image Writer constructor accepting image name and View Plane parameters,
+	 * @param imageName the name of jpeg file
+	 * @param width View Plane width in size units
+	 * @param height View Plane height in size units
+	 * @param nX amount of pixels by Width 
+	 * @param nY amount of pixels by height
+	 * @param sX amount of rays passing across one pixels
+	 * @param sY amount of ray passing along one pixels 
+	 */
 	public ImageWriter(String imageName, double width, double height, int nX, int nY,int sX,int sY) {
 		_imageName = imageName;
 		_imageWidth = width;

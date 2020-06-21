@@ -1,5 +1,4 @@
 package unittests;
-
 import org.junit.Test;
 
 import elements.AmbientLight;
@@ -14,8 +13,11 @@ import primitives.Vector;
 import renderer.ImageWriter;
 import renderer.Render;
 import scene.Scene;
+public class AdaptiveSupersamplingTest {
 
-public class suprSampling {
+	/**
+	 * Produce a picture of some spheres on a Plane lighted by a spot lights with Adaptive Supersampling improvment
+	 */
 	@Test
 	public void planeSpheres() {
 		Scene scene = new Scene("Test scene");
@@ -36,7 +38,7 @@ public class suprSampling {
 				new Plane(new Color(128,128,128),new Material(0.2, 0.2, 100, 0, 1),new Point3D(50,0,500),new Vector(0,-100,-1)));
 				 
 		scene.addLights( 
-				//new DirectionalLight(new Color(169, 169, 169), new Vector(-1, -1, 2))
+				
 				new SpotLight(new Color(220, 220, 220),  new Point3D(600, -40, 500), 1, 0.00001, 0.000005, 
 						 new Vector(-1, 0, 0)),
 				new SpotLight(new Color(95,158,160),  new Point3D(-100, 0, -600), 1, 0.00001, 0.000005, 
@@ -45,8 +47,8 @@ public class suprSampling {
 						   new Vector(0, 0, -50))
 				);
 		
-		ImageWriter imageWriter = new ImageWriter("superSempling improve", 200, 200, 600, 600,9,9);
-		Render render = new Render(imageWriter, scene);
+		ImageWriter imageWriter = new ImageWriter("AdaptiveSuperSampling improve", 200, 200, 600, 600);
+		Render render = new Render(imageWriter, scene).setMultithreading(3).setDebugPrint();
 
 		render.renderImage();
 		render.getImageWriter().writeToImage();

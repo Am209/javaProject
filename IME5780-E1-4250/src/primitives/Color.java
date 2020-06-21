@@ -171,5 +171,10 @@ public class Color {
         double b = _b / k;
         return new Color(r, g, b);
     }
+    public boolean equals(Color c) {
+        if (_r == c._r && _g == c._g && _b == c._b)
+           return true;
+        return false;
+    }
 
 }
