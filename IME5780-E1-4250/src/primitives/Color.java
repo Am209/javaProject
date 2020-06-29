@@ -61,6 +61,48 @@ public class Color {
     }
 
     /**
+	 * @return the _r
+	 */
+	public double get_r() {
+		return _r;
+	}
+
+	/**
+	 * @return the _g
+	 */
+	public double get_g() {
+		return _g;
+	}
+
+	/**
+	 * @return the _b
+	 */
+	public double get_b() {
+		return _b;
+	}
+
+	/**
+	 * @param _r the _r to set
+	 */
+	public void set_r(double _r) {
+		this._r = _r;
+	}
+
+	/**
+	 * @param _g the _g to set
+	 */
+	public void set_g(double _g) {
+		this._g = _g;
+	}
+
+	/**
+	 * @param _b the _b to set
+	 */
+	public void set_b(double _b) {
+		this._b = _b;
+	}
+
+	/**
      * Color setter to reset the color to BLACK
      * 
      * @return the Color object itself for chaining calls
@@ -171,8 +213,14 @@ public class Color {
         double b = _b / k;
         return new Color(r, g, b);
     }
+    /**
+     * check if the color equal to another one
+     * @param c the other color
+     * @return true if the differ between the colors unsegnificate 
+     */
     public boolean equals(Color c) {
-        if (_r == c._r && _g == c._g && _b == c._b)
+    	double diff = Math.abs(_r - c.get_r()) + Math.abs(_g - c.get_g() ) +Math.abs(_b - c.get_b());
+        if ( diff <= 5.0 )
            return true;
         return false;
     }

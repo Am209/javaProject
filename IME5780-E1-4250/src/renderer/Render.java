@@ -29,7 +29,9 @@ public class Render {
 	private int _threads = 1; 
 	private final int SPARE_THREADS = 2; // Spare threads if trying to use all the cores 
 	private boolean _print = false;  // printing progress percentage
-	
+	private static int THREAD_NUMBER = 0;
+	private static int[] SAMPLES = new int[3];
+	private static final int MAX__SAMPLES_LEVEL = 7;
 	
 	/** 
 	 *  Pixel is an internal helper class whose objects are associated with a Render object that 
@@ -171,19 +173,21 @@ public class Render {
 	 * The function create and and render an image using the scene and the imageWriter
 	 */
 	public void renderImage() {
-		int nX =  _imageWriter.getNx();
-		int nY = _imageWriter.getNy();
+		final int nX =  _imageWriter.getNx();
+		final int nY = _imageWriter.getNy();
 		final Pixel thePixel = new Pixel(nY, nX); // Main pixel management object 
 		Thread[] threads = new Thread[_threads]; 
 		for (int i = _threads - 1; i >= 0; --i) { // create all threads 
 			threads[i] = new Thread(() -> 
 			{ 
 				Pixel pixel = new Pixel(); // Auxiliary thread’s pixel object 
+				int threadNumber = THREAD_NUMBER++;
 				while (thePixel.nextPixel(pixel)) { 
-					Color color = calcPixelColor(nX,nY,pixel.col, pixel.row);
+					SAMPLES[threadNumber] = 0;
+					Color color = calcPixelColor(threadNumber,nX,nY,pixel.col, pixel.row);
 					_imageWriter.writePixel(pixel.col, pixel.row,color.getColor());
 				}
-			}); 
+			});
 		} 
 		for (Thread thread : threads) // Start all the threads 
 			thread.start(); 
@@ -191,6 +195,7 @@ public class Render {
 			try { thread.join(); } catch (Exception e) {} 
 		if (_print) 
 			System.out.printf("\r100%%\n"); // Print 100%
+		
 	}
 	
 	/**
@@ -201,40 +206,92 @@ public class Render {
 	 * @param pixelRow
 	 * @return color -the pixel color 
 	 */
-	private Color calcPixelColor(int nX,int nY, int pixelColumn, int pixelRow) {
+	private Color calcPixelColor(int threadNumber,int nX,int nY, int pixelColumn, int pixelRow) {
+		/**
 		Camera camera = _scene.getCamera();
 		double distance = _scene.getDistance();
 		double width = _imageWriter.getWidth();
 		double height = _imageWriter.getHeight();
 		Ray ray =  camera.constructRayThroughPixel(nX, nY, pixelColumn, pixelRow, distance, width, height);	
 		Point3D pixelCenter =  ray.getPoint(distance);
-		return  calcPixelColor(1, pixelCenter,width/nX,height/nY);
+		Color color = calcPixelColor(0,threadNumber,pixelCenter, width/nX, height/nY);
+		if (SAMPLES[threadNumber]==0) 
+			return color;
+		else 
+			return color.reduce(SAMPLES[threadNumber]);
+			
+		*/
+		Camera camera = _scene.getCamera();
+		Intersectable geometries = _scene.getGeometries(); 		
+		Color background = _scene.getBackground();
+		int sX =  _imageWriter.get_sX();
+		int sY = _imageWriter.get_sY();
+		double distance = _scene.getDistance();
+		double width = _imageWriter.getWidth();
+		double height = _imageWriter.getHeight();
+		Color color = Color.BLACK;
+		Ray ray;
+		for(int i = 0; i < sX; i++) {
+			for(int j = 0; j < sY; j++) {
+				if(sX==1 && sY==1)     //we dont want to turn on the superSampling improvment. 
+					ray =  camera.constructRayThroughPixel(nX, nY, pixelColumn, pixelRow, distance, width, height);	
+				else
+					ray =  camera.constructRayThroughPixel(sX*nX, sY*nY, pixelColumn*sY+j, pixelRow*sX+i, distance, width, height);		
+				List<GeoPoint> intersectionPoints = geometries.findIntersections(ray); 
+				if (intersectionPoints==null) 
+					color = color.add(background);                              
+				else {
+					GeoPoint closestPoint =  findCLosestIntersection(ray);
+					color = color.add(calcColor(closestPoint,ray));
+				}
+			}
+		}
 		
+		return color.reduce(sX*sY);
+	
 	}
-	private Color calcPixelColor(int level, Point3D pixelCenter,double pixelWidth,double pixelHight) {
+	/**
+	 * The function calculate the color of certain pixel using recursive method
+	 * @param pixelCenter 
+	 * @param pixelWidth
+	 * @param pixelWidth
+	 * @return color -the pixel color 
+	 */
+	private Color calcPixelColor(int level, int threadNumber,Point3D pixelCenter,double pixelWidth,double pixelHight) {
 		Color[] colors = calcPixelEdgesColor(pixelCenter,pixelWidth,pixelHight);
-		if(colors[0].equals(colors[1]) && colors[1].equals(colors[2]) && colors[2].equals(colors[3]))
-			return colors[0]; 
+		Color color = Color.BLACK; 
+		if((colors[0].equals(colors[1]) && colors[1].equals(colors[2]) && colors[2].equals(colors[3]))||level>= MAX__SAMPLES_LEVEL) {
+			color = color.add(colors[0],colors[1],colors[2],colors[3]);
+			return color.reduce(4); 
+		}
 		else {
 			Point3D[] centers = getPixelEdges(pixelCenter,pixelWidth/2.0,pixelHight/2.0);
 			Color color1,color2,color3,color4;
-			Color color = Color.BLACK; 
-			color1 = calcPixelColor(level+1, centers[0],pixelWidth/2.0,pixelHight/2.0);
-			color2 = calcPixelColor(level+1, centers[1],pixelWidth/2.0,pixelHight/2.0);
-			color3 = calcPixelColor(level+1, centers[2],pixelWidth/2.0,pixelHight/2.0);
-			color4 = calcPixelColor(level+1, centers[3],pixelWidth/2.0,pixelHight/2.0);
-			return color.add(color1,color2,color3,color4).reduce(4);
+			color1 = calcPixelColor(level+1,threadNumber,centers[0],pixelWidth/2.0,pixelHight/2.0);
+			color2 = calcPixelColor(level+1,threadNumber,centers[1],pixelWidth/2.0,pixelHight/2.0);
+			color3 = calcPixelColor(level+1,threadNumber,centers[2],pixelWidth/2.0,pixelHight/2.0);
+			color4 = calcPixelColor(level+1,threadNumber,centers[3],pixelWidth/2.0,pixelHight/2.0);
+			color = color.add(color1,color2,color3,color4);
+			SAMPLES[threadNumber] += 4; 
+			return color;
 		}
 	}
-	
+	/**
+	 * The function calculate the colors of the pixel's Edges  
+	 * @param pixelCenter 
+	 * @param pixelWidth
+	 * @param pixelWidth
+	 * @return color[] - colors of the pixel's Edges  
+	 */
 	private Color[] calcPixelEdgesColor (Point3D pixelCenter,double pixelWidth,double pixelHight) {
 		Intersectable geometries = _scene.getGeometries(); 		
 		Color background = _scene.getBackground();
 		Point3D cameraPoint = _scene.get_camera().get_p();
 		Point3D[] edges = getPixelEdges(pixelCenter,pixelWidth, pixelHight);
 		Color[] colors = new Color[4];
+		Ray ray;
 		for(int i = 0; i < 4; i++) {
-			Ray ray = new Ray(cameraPoint,edges[i].subtract(cameraPoint));
+			ray = new Ray(cameraPoint,edges[i].subtract(cameraPoint));
 			List<GeoPoint> intersectionPoints = geometries.findIntersections(ray); 
 			if (intersectionPoints==null) 
 				colors[i] = background;                              
@@ -245,15 +302,22 @@ public class Render {
 		}
 		return colors;
 	}
+	/**
+	 * The function calculate the Pixel's Edges 
+	 * @param pixelCenter 
+	 * @param pixelWidth
+	 * @param pixelHight
+	 * @return Point3D[] edges - the pixel's Edges 
+	 */
 	private Point3D[] getPixelEdges (Point3D pixelCenter,double pixelWidth,double pixelHight) {
 		Point3D[] edges = new Point3D[4];
 		Camera camera = _scene.getCamera();
-		edges[0] = pixelCenter.add(camera.get_vRight().scale(pixelWidth/2.0)).add(camera.get_vUp().scale(pixelHight/2.0));     //upright
+		edges[0] = pixelCenter.add(camera.get_vRight().scale(pixelWidth/2.0)).add(camera.get_vUp().scale(pixelHight/2.0));     //upright;
 		edges[1] = pixelCenter.add(camera.get_vRight().scale(-pixelWidth/2.0)).add(camera.get_vUp().scale(pixelHight/2.0));    //upLeft
-		edges[2] = pixelCenter.add(camera.get_vRight().scale(pixelWidth/2.0)).add(camera.get_vUp().scale(-pixelHight/2.0));    //downright
+		edges[2] = pixelCenter.add(camera.get_vRight().scale(pixelWidth/2.0)).add(camera.get_vUp().scale(-pixelHight/2.0));   //downright
 		edges[3] = pixelCenter.add(camera.get_vRight().scale(-pixelWidth/2.0)).add(camera.get_vUp().scale(-pixelHight/2.0));   //downLeft 
-	
 		return edges;
+		
 	}
 	/**
 	 * The function recieve point and  calculate its color 
