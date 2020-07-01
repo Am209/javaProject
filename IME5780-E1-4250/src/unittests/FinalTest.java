@@ -26,7 +26,7 @@ public class FinalTest {
 		scene.setAmbientLight(new AmbientLight(new Color(java.awt.Color.WHITE), 0.15));
 
 		scene.addGeometries(
-                                      //corona
+                //corona
 				new Sphere(new Color(65,105,225), new Material(0.5, 0.5, 100, 0.6, 0), 
 				50, new Point3D(-70, 50, 500)),
 			
@@ -205,7 +205,7 @@ public class FinalTest {
 				new Sphere(new Color(65,105,225), new Material(0.5, 0.5, 100, 0.6, 0), 
 						3.5, new Point3D(70, 49, 440)),		
 				
-				
+				//Mirror
 				new Triangle(new Color(20, 20, 20), new Material(0, 0, 0, 0, 1),
 						new Point3D(-200, 100, 1500),new Point3D(-200, -150, 1500), new Point3D(200, -150,1500)),
 				

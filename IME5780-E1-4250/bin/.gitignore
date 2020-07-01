@@ -1,5 +1,2 @@
-/geometries/
-/primitives/
-/renderer/
-/scene/
 /unittests/
+/renderer/
